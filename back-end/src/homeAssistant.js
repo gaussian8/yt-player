@@ -5,6 +5,7 @@ const redis = require('./common/redis')
 async function play (entity_id) {
   let content_id = await redis.lpop('play_list');
   await redis.lpush('played_list', content_id);
+  await play_pause(entity_id);
   return axios.post(property.HASS_DNS + '/api/services/media_extractor/play_media',
   {
     entity_id: entity_id,

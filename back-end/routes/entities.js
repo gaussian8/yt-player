@@ -83,7 +83,6 @@ router.post('/:id/next', wrapper(async (req, res, next) => {
   let play_list_count = await redis.llen('play_list');
   let played_list_count = await redis.llen('played_list');
   if (play_list_count > 0) {
-    await homeAssistant.play_pause(req.params.id)
     await homeAssistant.play(req.params.id);
     res.send({
       play_list_count: play_list_count-1,
