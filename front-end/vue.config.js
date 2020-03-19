@@ -8,7 +8,7 @@ module.exports = {
     : '/',
   devServer: {
     proxy: {
-      '^/api': {
+      '^/youtube/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
       }
