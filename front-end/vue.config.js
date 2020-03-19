@@ -10,6 +10,9 @@ module.exports = {
     proxy: {
       '^/youtube/api': {
         target: 'http://localhost:3000',
+        pathRewrite: {
+          '^/youtube/api': '/api', // remove base path
+        },
         changeOrigin: true,
       }
     }
