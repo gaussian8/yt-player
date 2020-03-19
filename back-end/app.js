@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/yt/api/entities', entitiesRouter);
-app.use('/yt/api/playlists', playlistsRouter);
+app.use('/api/entities', entitiesRouter);
+app.use('/api/playlists', playlistsRouter);
 
 module.exports = app;

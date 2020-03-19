@@ -62,7 +62,7 @@
     },
     methods: {
       initialize: function () {
-        axios.get('/yt/api/playlists')
+        axios.get('/api/playlists')
         .then(res => {
           this.items = res.data
         })
