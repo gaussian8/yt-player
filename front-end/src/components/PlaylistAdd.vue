@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     save: function (text, to) {
-      let to_arr = to.split('playlist?list=');
+      let to_arr = to.split('list=');
       to = to_arr.length === 1 ? to_arr[0] : to_arr[1];
 
       axios.post('/youtube/api/playlists/', {
