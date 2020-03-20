@@ -68,7 +68,7 @@ npm start
 
   services:
     yt-player:
-      image: gaussian/yt-player:1.0
+      image: gaussian8/yt-player:1.0
       container_name: yt-player
       volumes:
         - "./property.js:/app/back-end/config/property.js:ro"
