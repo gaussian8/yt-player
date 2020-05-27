@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     save: function (text, value) {
-      axios.post('/youtube/api/entities/', {
+      axios.post('/api/entities/', {
         text: text,
         value: value
       })

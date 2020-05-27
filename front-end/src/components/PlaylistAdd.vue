@@ -42,7 +42,7 @@ export default {
       let to_arr = to.split('list=');
       to = to_arr.length === 1 ? to_arr[0] : to_arr[1];
 
-      axios.post('/youtube/api/playlists/', {
+      axios.post('/api/playlists/', {
         icon: 'mdi-playlist-play',
         text: text,
         to: to

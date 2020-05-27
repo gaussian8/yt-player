@@ -95,19 +95,19 @@
     },
     methods: {
       initialize: function () {
-        axios.get('/youtube/api/playlists')
+        axios.get('/api/playlists')
         .then(res => {
           this.items = res.data
         })
       },
       delete_confirm: function (item) {
-      this.item = item;
-      this.dialog = true;
-    },
+        this.item = item;
+        this.dialog = true;
+      },
       delete_playlist: function (item) {
         let del_index = this.items.findIndex(e => e === item);
 
-        axios.post('/youtube/api/playlists/' + del_index + '/delete')
+        axios.post('/api/playlists/' + del_index + '/delete')
         .then(res => {
           if (res.data === 'success') {
             this.items.splice(del_index, 1);

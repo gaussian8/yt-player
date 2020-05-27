@@ -73,34 +73,34 @@ export default {
   },
   methods: {
     initialize: function () {
-      axios.get('/youtube/api/entities')
+      axios.get('/api/entities')
       .then(res => {
         this.entities = res.data
         this.entity = res.data[0].value
-        axios.get('/youtube/api/entities/' + this.entity)
+        axios.get('/api/entities/' + this.entity)
         .then(res => {
           this.play_list_count = res.data.play_list_count
           this.played_list_count = res.data.played_list_count
         })
       })
-      axios.get('/youtube/api/playlists/' + this.$route.params.id)
+      axios.get('/api/playlists/' + this.$route.params.id)
       .then(res => {
         this.items = res.data
       })
     },
     play: function (play_list) {
-      axios.post('/youtube/api/entities/' + this.entity + '/play', play_list)
+      axios.post('/api/entities/' + this.entity + '/play', play_list)
       .then(res => {
         this.play_list_count = res.data.play_list_count
         this.played_list_count = res.data.played_list_count
       })
     },
     play_pause: function () {
-      axios.post('/youtube/api/entities/' + this.entity + '/play_pause')
+      axios.post('/api/entities/' + this.entity + '/play_pause')
     },
     prev: function () {
       this.loading.prev = true
-      axios.post('/youtube/api/entities/' + this.entity + '/prev')
+      axios.post('/api/entities/' + this.entity + '/prev')
       .then(res => {
         this.play_list_count = res.data.play_list_count
         this.played_list_count = res.data.played_list_count
@@ -109,7 +109,7 @@ export default {
     },
     next: function () {
       this.loading.next = true
-      axios.post('/youtube/api/entities/' + this.entity + '/next')
+      axios.post('/api/entities/' + this.entity + '/next')
       .then(res => {
         this.play_list_count = res.data.play_list_count
         this.played_list_count = res.data.played_list_count

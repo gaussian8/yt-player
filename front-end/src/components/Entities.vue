@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     initialize: function () {
-      axios.get('/youtube/api/entities')
+      axios.get('/api/entities')
       .then(res => {
         this.entities = res.data
       })
@@ -68,7 +68,7 @@ export default {
     delete_entity: function (entity) {
       let del_index = this.entities.findIndex(e => e === entity);
 
-      axios.post('/youtube/api/entities/' + del_index + '/delete')
+      axios.post('/api/entities/' + del_index + '/delete')
       .then(res => {
         if (res.data === 'success') {
           this.entities.splice(del_index, 1);

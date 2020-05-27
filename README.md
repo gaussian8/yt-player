@@ -37,7 +37,6 @@ npm start
 ### Prerequirements
 - docker platform
 - docker-compose
-- Nginx for your home network (Recommanded)
 
 ### Settings
 1. Install redis
@@ -68,7 +67,7 @@ npm start
 
   services:
     yt-player:
-      image: gaussian8/yt-player:1.0
+      image: gaussian8/yt-player:[TAG]
       container_name: yt-player
       volumes:
         - "./property.js:/app/back-end/config/property.js:ro"
@@ -132,18 +131,7 @@ npm start
         service: rest_command.play_media_stop
 
   ```
-4. Add nginx reverse proxy for yt-player
-  ```conf
-  location /youtube/ {
-    proxy_pass http://localhost:6001/;
-    proxy_set_header Host $host;
 
-    # For security
-    allow YOUR_PUBLIC_IP;
-    allow 192.168.1.0/24;
-    deny all;
-  }
-  ```
 ### Screenshot
 ![screenshot](./hass_1.png)
 ![screenshot](./hass_2.png)

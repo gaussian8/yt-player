@@ -4,7 +4,7 @@ module.exports = {
   ],
   outputDir: '../back-end/public',
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/youtube/'
+    ? '/'
     : '/',
   devServer: {
     proxy: {
