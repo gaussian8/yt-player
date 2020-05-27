@@ -1,27 +1,18 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      clipped
-    >
+    <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
-        <v-list-item
-          v-for="item in items"
-          :key="item.text"
-          :to="'/playlist/' + item.to"
-          link
-        >
+        <v-list-item v-for="playlist in playlists" :key="playlist.text" :to="'/playlist/' + playlist.to" link>
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>{{ playlist.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              {{ item.text }}
+              {{ playlist.text }}
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <v-btn icon @click="delete_confirm(item)">
+            <v-btn icon @click="delete_confirm(playlist)">
               <v-icon color="red lighten-1">mdi-minus-circle-outline</v-icon>
             </v-btn>
           </v-list-item-action>
@@ -29,12 +20,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      clipped-left
-      color="#03a9f4"
-      dense
-    >
+    <v-app-bar app clipped-left color="#03a9f4" dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-icon class="mx-4">fab fa-youtube</v-icon>
       <v-toolbar-title class="mr-12 align-center">
@@ -67,59 +53,57 @@
         Error occured while processing
       </v-alert>
       <v-container class="fill-height">
-       <router-view :key="$route.fullPath"></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </v-container>
     </v-content>
   </v-app>
 </template>
 
-<script>
-  import axios from 'axios'
-  export default {
-    props: {
-      source: String,
-    },
-    data: () => ({
-      drawer: null,
-      items: [],
-      item: '',
-      dialog: false,
-      alert: {
-        success: false,
-        error: false
-      }
-    }),
-    created () {
-      this.$vuetify.theme.dark = true
-      this.initialize()
-    },
-    methods: {
-      initialize: function () {
-        axios.get('/api/playlists')
-        .then(res => {
-          this.items = res.data
-        })
-      },
-      delete_confirm: function (item) {
-        this.item = item;
-        this.dialog = true;
-      },
-      delete_playlist: function (item) {
-        let del_index = this.items.findIndex(e => e === item);
+<script lang="ts">
+import axios, { AxiosResponse } from "axios";
+import { Component, Vue } from "vue-property-decorator";
+import { Playlist } from "./components/PlaylistAdd.vue";
 
-        axios.post('/api/playlists/' + del_index + '/delete')
-        .then(res => {
-          if (res.data === 'success') {
-            this.items.splice(del_index, 1);
-            this.alert.success = true
-          } else {
-            this.alert.error = true
-          }
-        })
-        .finally(() => {
-          this.dialog = false;
-        })
-      }
-    }
+@Component
+export default class App extends Vue {
+  drawer = false;
+  playlists = [] as Playlist[];
+  targetPlaylist = new Playlist();
+  dialog = false;
+  alert = {
+    success: false,
+    error: false,
+  };
+
+  created() {
+    this.$vuetify.theme.dark = true;
+    this.initialize();
   }
+  initialize(): void {
+    axios.get("/api/playlists").then((res: AxiosResponse<Playlist[]>) => {
+      this.playlists = res.data;
+    });
+  }
+  delete_confirm(targetPlaylist: Playlist): void {
+    this.targetPlaylist = targetPlaylist;
+    this.dialog = true;
+  }
+  delete_playlist(targetPlaylist: Playlist): void {
+    let del_index = this.playlists.findIndex((e) => e === targetPlaylist);
+
+    axios
+      .post("/api/playlists/" + del_index + "/delete")
+      .then((res) => {
+        if (res.data === "success") {
+          this.playlists.splice(del_index, 1);
+          this.alert.success = true;
+        } else {
+          this.alert.error = true;
+        }
+      })
+      .finally(() => {
+        this.dialog = false;
+      });
+  }
+}
 </script>
