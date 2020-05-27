@@ -1,18 +1,11 @@
 <template>
   <v-card width="100%" height="100%" class="mx-auto">
     <v-col cols="12" sm="12">
-      <v-text-field
-        v-model="text"
-        counter="25"
-        maxlength="25"
-        label="Playlist Name"
-        outlined
-        clearable
-      ></v-text-field>
+      <v-text-field v-model="playlist.text" counter="25" maxlength="25" label="Playlist Name" outlined clearable></v-text-field>
     </v-col>
     <v-col cols="12" sm="12">
       <v-text-field
-        v-model="to"
+        v-model="playlist.to"
         counter="200"
         maxlength="200"
         label="Youtube Playlist Link"
@@ -21,40 +14,37 @@
       ></v-text-field>
     </v-col>
     <v-col cols="12" sm="12" align="right">
-      <v-btn class="ma-2" depressed color="green" to="/" >Cancel</v-btn>
+      <v-btn class="ma-2" depressed color="green" to="/">Cancel</v-btn>
       <v-btn class="ma-2" depressed color="primary" @click="save(text, to)">Save</v-btn>
     </v-col>
   </v-card>
 </template>
 
-<script>
-import axios from 'axios'
+<script lang="ts">
+import axios from "axios";
+import { Component, Vue } from "vue-property-decorator";
 
-export default {
-  data() {
-    return {
-      text: '',
-      to: ''
-    };
-  },
-  methods: {
-    save: function (text, to) {
-      let to_arr = to.split('list=');
-      to = to_arr.length === 1 ? to_arr[0] : to_arr[1];
+export class Playlist {
+  icon: string = "mdi-playlist-play";
+  text: string = "";
+  to: string = "";
+}
 
-      axios.post('/api/playlists/', {
-        icon: 'mdi-playlist-play',
-        text: text,
-        to: to
-      })
-      .then(res => {
-        if (res.data === 'success') {
-          this.$router.go();
-        } else {
-          alert('Error occured.');
-        }
-      })
-    },
+@Component
+export default class PlaylistAdd extends Vue {
+  playlist = new Playlist();
+
+  save(playlist: Playlist): void {
+    let to_arr = playlist.to.split("list=");
+    playlist.to = to_arr.length === 1 ? to_arr[0] : to_arr[1];
+
+    axios.post("/api/playlists/", playlist).then((res) => {
+      if (res.data === "success") {
+        this.$router.go(0);
+      } else {
+        alert("Error occured.");
+      }
+    });
   }
 }
 </script>
